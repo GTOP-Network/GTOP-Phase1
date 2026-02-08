@@ -3,7 +3,7 @@
 # Figure-2 #
 #==================================#
 library(data.table)
-
+library(ggplot2)
 setwd("/media/london_A/mengxin/GTOP_code/fig-2/fig2/input/")
 # Fig.2a LRS_RNA_MDS ------------------------------------------------------
 
@@ -73,7 +73,7 @@ print(gg_mds_corr)
 library(data.table)
 library(ggplot2)
 
-dat<-fread("LR_transcript_novel_stat_Transcript.txt")
+dat<-fread("fig2b.LR_transcript_novel_stat_Transcript.txt")
 dat_long <- melt(
   dat,
   id.vars = "index",
@@ -89,7 +89,7 @@ dat_long$index <- factor(
   levels = c("GTOP", "GENCODE", "GTOP + GENCODE")
 )
 type_colors <- c(
-  "GENCODE v47"        = "#7d8bad",
+  "GENCODE v47"        = "#9faac1",
   "Annotated"  = "#c3968f",
   "Novel"          = "#9d3929"
 )
@@ -102,12 +102,18 @@ ggplot(dat_long, aes(x = index, y = Count, fill = Type)) +
     y = "Number of transcripts (x10³)",
     fill = "Category"
   ) +
-  theme_classic(base_size = 13)
+  theme_classic(base_size = 13) +
+  theme(
+    axis.text.x = element_text(
+      angle = 50,
+      hjust = 1,
+      vjust = 1
+    ))
 
 # Fig.2c LR_SQANTI3_annot_coding_status -----------------------------------
 
 
-dat<-fread("LR_SQANTI3_annot_coding_status.txt")
+dat<-fread("fig2c.LR_SQANTI3_annot_coding_status.txt")
 
 dat_long <- melt(
   dat,
@@ -141,12 +147,18 @@ ggplot(dat_long, aes(x = index, y = Count, fill = Type)) +
     y = "Number of transcripts (x10³)",
     fill = "Coding status"
   ) +
-  theme_classic(base_size = 13)
+  theme_classic(base_size = 13) +
+  theme(
+    axis.text.x = element_text(
+      angle = 50,
+      hjust = 1,
+      vjust = 1
+    ))
 
 
 # Fig2.d LR_suppa_splicing_events_stat ------------------------------------
 
-dat<-fread("LR_suppa_splicing_events_stat.txt")
+dat<-fread("fig2d.LR_suppa_splicing_events_stat.txt")
 dat_long <- melt(
   dat,
   id.vars = "index",
@@ -162,7 +174,7 @@ dat_long$index <- factor(
   levels = dat$index
 )
 type_colors <- c(
-  "GENCODE v47"        = "#7d8bad",
+  "GENCODE v47"        = "#9faac1",
   "Novel"          = "#9d3929"
 )
 dat_long$Count<-dat_long$Count/1000
@@ -170,7 +182,7 @@ dat_long$Count<-dat_long$Count/1000
 ggplot(dat_long, aes(x = index, y = Count, fill = Type)) +
   geom_col(width = 0.7) +
   scale_y_continuous(
-    breaks = seq(0, 400, by = 50)
+    breaks = seq(0, 400, by = 100)
   ) +
   scale_fill_manual(values = type_colors) +
   labs(
@@ -178,12 +190,19 @@ ggplot(dat_long, aes(x = index, y = Count, fill = Type)) +
     y = "Number of splicing events (x10³)",
     fill = "Coding status"
   ) +
-  theme_classic(base_size = 13)
+  theme_classic(base_size = 13) +
+  theme(
+    axis.text.x = element_text(
+      angle = 50,
+      hjust = 1,
+      vjust = 1
+    ))
 
 
 
 # Fig2.e LR_transcript_tissue_specificity ---------------------------------
-dat<-fread("LR_transcript_tissue_specificity.txt")
+library(tidyr)
+dat<-fread("fig2e.LR_transcript_tissue_specificity.txt")
 
 dat_long <- pivot_longer(
   dat,
@@ -199,16 +218,17 @@ ggplot(dat_long, aes(x = index, y = Proportion, color = Type)) +
     breaks = seq(0, 0.30, by = 0.05)
   ) +
   scale_color_manual(values = c("Annotated" = "#c3968f", "Novel" = "#9d3929")) +  
-  labs(x = "Number of tissues expressing", y = "Proportion of transcripts", color = "Type") +
+  labs(x = "Tissue number", y = "Proportion of transcripts", color = "Type") +
   theme_classic(base_size = 13)
 
 
 # Fig2.f MS_all_peptide_validate ------------------------------------------
-dat<-fread("MS_all_peptide_validate.txt")
+library(dplyr)
+dat<-fread("fig2f.MS_all_peptide_validate.txt")
 dat_long <- melt(
   dat,
   id.vars = "index",
-  measure.vars = c("Unique peptide", "Shared peptide"),  # 融化的列
+  measure.vars = c("Unique peptide", "Shared peptide"),
   variable.name = "Type",
   value.name = "Count"
 )
@@ -231,14 +251,14 @@ tissue_colors <- setNames(dat[[4]], dat[[1]])
 dat_long<-dat_long %>%
   left_join(dat[,c(1,4)],by="index")
 
-point_data <- unique(dat_long[, .(index)])  # 这里 index 就是组织名
+point_data <- unique(dat_long[, .(index)]) 
 
 ggplot(dat_long, aes(x = factor(index), y = Count, fill = Type)) +
   geom_col(width = 0.7) +   
   geom_point(
     data = point_data, 
     mapping = aes(x = factor(index), y = -0.05, color = index), 
-    inherit.aes = FALSE,  # 不继承上一层的 fill = Type
+    inherit.aes = FALSE, 
     size = 4
   ) +
   scale_fill_manual(values = type_colors) +
@@ -358,11 +378,11 @@ ggplot(p_novel, aes(x = Var1, y = Proportion, fill = Var2)) +
 
 
 # Fig2.h ASE/ASTS gene number  ---------------------------------------------------------
-
+library(ggpubr)
 df_plot <- fread("Fig 2h.txt")
 ggplot(df_plot, aes(x=number, y=reorder(class, number)))+
   geom_bar(stat = "identity", fill="#5c86af")+
-  geom_text(aes(x=number+2, label=number))+
+  #geom_text(aes(x=number+2, label=number))+
   theme_pubr()+
   ylab("")
 
