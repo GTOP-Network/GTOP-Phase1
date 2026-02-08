@@ -12,12 +12,11 @@ library(tidyverse)
 library(ggpubr)
 library(magrittr)
 library(ggbreak)
+library(ggrastr)
 setwd("/media/london_A/mengxin/GTOP_code/extend/extend_145/input")
 
 # Extended Fig.4a ---------------------------------------------------------
-library(ggplot2)
-library(ggpubr)
-library(ggrastr)
+
 qq_plot_list <- readRDS("qq_plot.all_tissue.RDS")
 p <- ggplot(qq_plot_list,aes(x=ExpP,y=ObservedP,color=Tissue)) + 
   geom_point_rast(raster.dpi = getOption("ggrastr.default.dpi", 300)) + 
@@ -37,7 +36,7 @@ ggsave(
 dat <- readRDS("ExtendFig4b.RDS")
 
 ggplot(dat,aes(x=distance,color=VarType)) + geom_density(size=1.5) + theme_pubr() +
-  scale_color_manual(values = c("#7B88A8","#983927","#609561"))
+  scale_color_manual(values = c("#7B88A8","#609561","#983927"))
 
 # Extended Fig.4c:  torus enrichment ------------------------------------------------------------------
 
@@ -49,8 +48,8 @@ p1 <- plotdf %>%
   ggplot(.) +
   geom_pointrange(aes(x=Ann, y = logmFC, ymin=lFC, ymax=hFC, color = QTL, shape=QTL), 
                   position=position_dodge(width=0.8), size = 0.5)+
-  scale_color_manual(values=c("eQTL"="#c9c9c9" , "juQTL"="#7d8bad",
-                              "tuQTL"="#9d3928"))+
+  scale_color_manual(values=c("eQTL"="#a2bf98" , "juQTL"="#7d8bad",
+                              "tuQTL"="#b47973"))+
   scale_shape_manual(values = c("eQTL"=16, "juQTL"=15, "tuQTL"=17))+
   geom_hline(yintercept=0, linetype="dashed", color = "red")+
   # ylim(-8,20)+
@@ -71,8 +70,8 @@ p2 <- plotdf %>%
   ggplot(.)+
   geom_bar(aes(x=meanratio, y=feature, fill=type), stat = "identity", position=position_dodge(width=0.9))+
   geom_errorbar(aes(xmax=meanratio+sdratiio, xmin=meanratio-sdratiio, y=feature, group=type), position=position_dodge(width=0.9),width=0)+
-  scale_fill_manual(values=c("eQTL"="#c9c9c9" , "juQTL"="#7d8bad",
-                             "tuQTL"="#9d3928"))+
+  scale_fill_manual(values=c("eQTL"="#a2bf98" , "juQTL"="#7d8bad",
+                             "tuQTL"="#b47973"))+
   # scale_x_break(c(0.12,0.65),
   #               space = 0.3,
   #               scales = .5)+
