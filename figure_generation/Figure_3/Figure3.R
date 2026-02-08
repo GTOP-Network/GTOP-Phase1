@@ -49,7 +49,7 @@ df_snv_eqtl <- df_plot.eqtl %>% filter(Var2=="SNV") %>% arrange(desc(Freq))
 tissue_orders_1 <- df_snv_eqtl$Var1
 rm(df_snv_eqtl)
 df_plot.eqtl$Var1 <- factor(df_plot.eqtl$Var1,levels = tissue_orders_1)
-p1 <- ggplot(df_plot.eqtl,aes(x=Var1,y=Freq)) + geom_bar(stat="identity",width=.8,fill="#c9c9c9") + theme_pubr() + 
+p1 <- ggplot(df_plot.eqtl,aes(x=Var1,y=Freq)) + geom_bar(stat="identity",width=.8,fill="#aac79c") + theme_pubr() + 
   facet_wrap(~Var2,scales = "free_y",ncol=1);p1
 
 
@@ -167,18 +167,29 @@ ggplot(count, aes(x = TR_GeneName, y = Tissue, fill = Class)) +
 
 ggplot(dosage, aes(x = TR_GeneName, y = CNV)) +
   geom_boxplot(aes(fill=GeneRegion)) +
-  #geom_jitter(width = 0.2, size = 0.3,color = "darkgrey", shape = 16) +
   scale_fill_npg() +
-  #scale_fill_brewer(palette = "Set2")+
   theme_bw() +
   scale_y_log10()+
   theme(axis.text = element_text(colour = "black")) +
   coord_flip()
 
 
-# Fig.3F: 待定 --------------------------------------------------------------
+# Fig.3F: pathogenic TR-example --------------------------------------------------------------
 
 
+dat <- fread("./Fig3f.txt") %>% mutate(CNV_f = factor(as.character(CNV), levels = sort(unique(CNV))))
+
+ggplot(data = dat, aes(x = CNV_f, y = pheno)) +
+  geom_boxplot(width = 0.5, outlier.shape = NA) +
+  geom_jitter(width = 0.15, size = 1, na.rm = TRUE) +
+  geom_smooth(aes(x = as.numeric(factor(CNV_f)), y = pheno, group = Tissue),
+              method = "lm", formula = y ~ x,se = T, size = 1, linetype = "solid") +
+  labs( x= "MUC1 60bp VNTR length (number of repeats)",
+        color = "Tissue") +
+  theme_classic() +
+  theme(axis.text.x = element_text(angle = 90, hjust = 1, size = 8),
+        strip.text = element_text(size = 10, face = "bold")) +
+  facet_grid( ~ Tissue, scales = "free_x", space = "free_x")
 
 
 # Fig.3g:  MASH -------------------------------------------------------------
