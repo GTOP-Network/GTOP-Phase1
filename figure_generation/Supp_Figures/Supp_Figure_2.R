@@ -50,14 +50,31 @@ p_with_marginals3 <- ggMarginal(
 print(p_with_marginals3)
 
 p3 <- ggplot(dat,aes(x = GC)) +
-  geom_histogram(binwidth = 0.05, fill = "grey", color = "black") +
+  geom_histogram(binwidth = 0.1, fill = "grey", color = "black") +
   theme_classic() +
   geom_vline(xintercept = median(dat$GC), linetype = "dashed", size = 0.8, color ="#3d5488") + 
   annotate("text", x = median(dat$GC), y = max(hist(dat$GC, plot = FALSE)$counts)*0.1,
            label = paste0("Median: ", round(median(dat$GC), 2)), color = "black", fontface = "bold") +  
   labs(x = "GC content(%)",y = "Number of samples")
+p3
+# Supp.Fig.2d: Kinship and IBD ----------------------------------------------------------------------
 
-# Supp.Fig.2d-k: SRS WGS QC Statistics  --------------------------------------------------------
+dat <- fread("Supp_Fig2l.kinship_IBD.txt")
+y0 <- min(dat$Kinship)
+y1 <- max(dat$Kinship)
+if (y1 < 0.1) {y1 <- 0.1}
+ggplot(dat, aes(x = Z0, y = Kinship)) +
+  geom_point(color = "grey", size = 2) +
+  scale_x_continuous(name = "Probability of zero IBD",limits = c(0.75,1)) +
+  scale_y_continuous(
+    name = "Kinship coefficient",
+    limits = c(y0,y1)) +
+  geom_hline(yintercept = 0, linetype = "dashed", color = "gray40") +
+  theme_classic() +
+  theme(axis.title = element_text(face = "bold", size = 12),
+        axis.text = element_text(color = "black", size = 10))
+
+# Supp.Fig.2e-h: SRS WGS QC Statistics  --------------------------------------------------------
 dat <- fread("Supp_Fig2.SRS_QC.txt")
 coverage_plot <- ggplot(dat, aes(x = Coverage)) +
   geom_histogram(binwidth = 2, fill = "grey", color = "black") +
@@ -84,17 +101,6 @@ q30_plot <- ggplot(dat, aes(x = total_bases_GB,y = after_filtering__q30_rate)) +
 median(dat$total_bases_GB)#145.31
 median(dat$after_filtering__q30_rate)#0.967432
 
-insert_plot <- ggplot(dat, aes(x = MEDIAN_INSERT_SIZE)) +
-  geom_histogram(binwidth = 5, fill = "grey", color = "black") +
-  theme_classic() +
-  geom_vline(xintercept = median(dat$MEDIAN_INSERT_SIZE, na.rm = TRUE), linetype="dashed", color="#3d5488", size=0.8) +
-  geom_vline(xintercept = median(dat$MEDIAN_INSERT_SIZE, na.rm = TRUE) + 4*sd(dat$MEDIAN_INSERT_SIZE, na.rm = TRUE),
-             linetype="dashed", color="#3d5488", size=0.8) +
-  geom_vline(xintercept = median(dat$MEDIAN_INSERT_SIZE, na.rm = TRUE) - 4*sd(dat$MEDIAN_INSERT_SIZE, na.rm = TRUE), linetype="dashed", color="#3d5488", size=0.8) +
-  labs(x = "Median insert size (bp)",y = "Number of samples")+
-  theme(axis.line=element_line(color='black'),
-        axis.text=element_text(color='black'),
-        legend.key=element_blank())
 
 contamination_plot <- ggplot(dat, aes(x = `FREEMIX(Alpha)`)) +
   geom_histogram(binwidth = 0.0001, fill = "grey", color = "black") +
@@ -112,56 +118,8 @@ chimeric_plot <- ggplot(dat, aes(x = PCT_CHIMERAS)) +
         axis.text=element_text(color='black'),
         legend.key=element_blank())
 
-sex_plot <- ggplot(dat, aes(x = chrX_Autosome,y = chrY_Autosome)) +
-  geom_point(size = 2,color = "grey") +
-  theme_classic() +
-  geom_vline(xintercept = 1, linetype="dashed", color="#3d5488", size=0.8) +
-  geom_hline(yintercept = 0.5, linetype="dashed", color="#3d5488", size=0.8) +
-  labs(x = "X/A depth ratio",y = "Y/A depth ratio")+
-  theme(axis.line=element_line(color='black'),
-        axis.text=element_text(color='black'),
-        legend.key=element_blank())
 
-
-mapping_plot <- ggplot(dat, aes(x = primary_proportion,y = properly_proportion)) +
-  geom_point(size = 2,color = "grey") +
-  theme_classic() +
-  scale_x_continuous(limits = c(95,100))+
-  scale_y_continuous(limits = c(90,100))+
-  geom_vline(xintercept = median(dat$primary_proportion), linetype="dashed", color="#3d5488", size=0.8) +
-  geom_hline(yintercept = median(dat$properly_proportion), linetype="dashed", color="#3d5488", size=0.8) +
-  labs(x = "Primary mapping rate",y = "Properly mapping rate")+
-  theme(axis.line=element_line(color='black'),
-        axis.text=element_text(color='black'),
-        legend.key=element_blank())
-
-gc_plot <- ggplot(dat, aes(x = after_filtering__gc_content)) +
-  geom_histogram(binwidth = 0.005, fill = "grey", color = "black") +
-  theme_classic() +
-  geom_vline(xintercept = median(dat$after_filtering__gc_content), linetype = "dashed", size = 0.8, color ="#3d5488") + 
-  annotate("text", x = median(dat$after_filtering__gc_content), y = max(hist(dat$after_filtering__gc_content, plot = FALSE)$counts)*0.5,
-           label = paste0("Median: ", round(median(dat$after_filtering__gc_content), 2)), color = "black", fontface = "bold") +  
-  labs(x = "GC content(%)",y = "Number of samples")+
-  theme(axis.line=element_line(color='black'),
-        axis.text=element_text(color='black'),
-        legend.key=element_blank())
-
-# Supp.Fig.2l: Kinship and IBD ----------------------------------------------------------------------
-
-dat <- fread("Supp_Fig2l.kinship_IBD.txt")
-y0 <- min(dat$Kinship)
-y1 <- max(dat$Kinship)
-if (y1 < 0.1) {y1 <- 0.1}
-p1 <- ggplot(dat, aes(x = Z0, y = Kinship)) +
-  geom_point(color = "grey", size = 2) +
-  scale_x_continuous(name = "Probability of zero IBD") +
-  scale_y_continuous(
-    name = "Kinship coefficient",
-    limits = c(y0,y1)) +
-  geom_hline(yintercept = 0, linetype = "dashed", color = "gray40") +
-  theme_classic() +
-  theme(axis.title = element_text(face = "bold", size = 12),
-        axis.text = element_text(color = "black", size = 10))
+cowplot::plot_grid(coverage_plot,q30_plot,chimeric_plot,ncol = 4,contamination_plot)
 
 
 
