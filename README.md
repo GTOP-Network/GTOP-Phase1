@@ -10,7 +10,7 @@ Newly generated sequencing data for the 160 individuals is available on the Sequ
 
 ### Processed data
 
-Processed gene expression matrices and QTL mapping results (as well as a host of other downstream data) are currently available on Github (**[GTOP Github link](https://zenodo.org/doi/10.5281/zenodo.10535719)**) as well as Dropbox (**[GTOP Website link](https://bioinfo.szbl.ac.cn/GTOP/expression)**).
+Processed gene expression matrices and QTL mapping results (as well as a host of other downstream data) are currently available on Github (**[GTOP Github link](https://github.com/GTOP-Network/GTOP-Phase1/)**) as well as Dropbox (**[GTOP Website link](https://bioinfo.szbl.ac.cn/GTOP/expression)**).
 
 Briefly, this repo contains the following data:
 
