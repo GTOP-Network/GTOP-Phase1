@@ -1,6 +1,6 @@
 #==============================================#
 # Short-reads-RNA-QC #
-# Supp-Figure-12#
+# Supp-Figure-3#
 #==============================================#
 setwd("/media/london_A/mengxin/GTOP_code/supp/supp_fig3/input")
 
