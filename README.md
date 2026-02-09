@@ -10,7 +10,7 @@ Newly generated sequencing data for the 160 individuals is available on the Sequ
 
 ### Processed data
 
-Processed gene expression matrices and QTL mapping results (as well as a host of other downstream data) are currently available on Github (**[GTOP Github link](https://zenodo.org/doi/10.5281/zenodo.10535719)**) as well as Dropbox (**[GTOP Dropbox link](https://www.dropbox.com/scl/fo/3filfi60qhxgokmjb6weq/AE14SzbtRK1U2mfstLM8jFc?rlkey=ihnv8hpbj1ilb96cxsm8fc42p&dl=0)**).
+Processed gene expression matrices and QTL mapping results (as well as a host of other downstream data) are currently available on Github (**[GTOP Github link](https://zenodo.org/doi/10.5281/zenodo.10535719)**) as well as Dropbox (**[GTOP Website link](https://bioinfo.szbl.ac.cn/GTOP/expression)**).
 
 Briefly, this repo contains the following data:
 
@@ -18,7 +18,7 @@ Briefly, this repo contains the following data:
 2. Gene expression and splicing matrices used for e/sQTL mapping and analyses of global trends of expression/splicing diversity
 3. cis-e/sQTL mapping results, including aFC estimates for cis-eQTLs
 4. Functional annotations of cis-e/sQTLs
-5. Results of colocalization analysis between MAGE e/sQTLs and complex trait GWAS from the [PAGE](https://doi.org/10.1038/s41586-019-1310-4) study
+5. Results of colocalization analysis between GTOP e/sQTLs and complex trait GWAS from the [GTOP](https://doi.org/10.1038/s41586-019-1310-4) study
 6. Results of analyses of global trends of expression/splicing diversity
 7. Jointly-generated top genotype PCs for samples in GTOP and other resources with paired WGS/RNA-seq data (Geuvadis, GTEx, AFGR)
 
@@ -33,9 +33,9 @@ The high-coverage variant calls used for QTL mapping were previously generated b
 
 ## Code
 
-Code used for data processing and downstream analyses is made available in the [analysis_pipeline/](https://github.com/mccoy-lab/MAGE/blob/main/analysis_pipeline) directory, along with READMEs describing how each script is run.
+Code used for data processing and downstream analyses is made available in the [analysis_pipeline/](https://github.com/GTOP-Network/GTOP-Phase1/tree/main/analysis_pipeline) directory, along with READMEs describing how each script is run.
 
-Code used to produce major figures/panels in the manuscript is made available in the [figure_generation/](https://github.com/mccoy-lab/MAGE/blob/main/figure_generation) directory.
+Code used to produce major figures/panels in the manuscript is made available in the [figure_generation/](https://github.com/GTOP-Network/GTOP-Phase1/tree/main/figure_generation) directory.
 
 ## The GTOP manuscript
 
