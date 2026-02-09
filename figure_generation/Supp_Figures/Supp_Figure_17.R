@@ -1,8 +1,7 @@
 #==============================================#
-# expression PCA #
+# phenotype-pca-sQTL #
 # Supp-Figure-17#
 #==============================================#
-
 library(data.table)
 library(dplyr)
 library(magrittr)
@@ -10,8 +9,7 @@ library(PCAForQTL)
 library(cowplot)
 
 setwd("/media/london_A/mengxin/GTOP_code/supp/supp_fig17")
-
-# Supp.Fig.17 expression PCA ----------------------------------------------
+# Supp.Fig.19 splicing PCA ------------------------------------------------
 
 
 reslist <- readRDS("./input/Figure S17.rds")
@@ -24,5 +22,3 @@ for (i in 1:length(reslist)) {
 }
 
 cowplot::plot_grid(plotlist = figlist, ncol = 3)
-
-

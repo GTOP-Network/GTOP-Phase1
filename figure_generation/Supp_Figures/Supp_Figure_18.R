@@ -9,7 +9,7 @@ library(PCAForQTL)
 library(cowplot)
 
 setwd("/media/london_A/mengxin/GTOP_code/supp/supp_fig18")
-# Supp.Fig.18 transcript usage PCA ----------------------------------------
+# Supp.Fig.17 transcript usage PCA ----------------------------------------
 
 reslist <- readRDS("./input/Figure S18.rds")
 figlist <- vector("list", length(reslist))
