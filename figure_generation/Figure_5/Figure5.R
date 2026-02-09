@@ -115,7 +115,7 @@ names(df_comb.snv) <- c("Var1","Count","cs_class")
 df_plot <- rbind(df_comb.snv,df_comb.sv,df_comb.tr)
 df_plot$Var1 <- as.character(df_plot$Var1)
 df_plot$cs_class <- as.character(df_plot$cs_class)
-df_plot$Var1[df_plot$Var1=="SNV" & df_plot$cs_class=="SNV_only"] <- "lead"
+df_plot$Var1[df_plot$Var1=="SNV" & df_plot$cs_class=="SNV_only"] <- "not_lead"
 df_plot$Var1[df_plot$Var1=="SV" & df_plot$cs_class=="cs_sv"] <- "lead"
 df_plot$Var1[df_plot$Var1=="TR" & df_plot$cs_class=="cs_tr"] <- "lead"
 
