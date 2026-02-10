@@ -7,7 +7,7 @@ library(tidyverse)
 library(ggpubr)
 library(data.table)
 
-setwd("/media/london_A/mengxin/GTOP_code/supp/supp_fig24")
+setwd("/path/to/GTOP_code/supp/supp_fig24")
 # Supp.Fig.24b SV-eQTL-example IRGM -----------
 
 dat <- fread("./input/Figure S24.txt",sep = "\t")
