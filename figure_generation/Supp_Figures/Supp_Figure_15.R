@@ -1,7 +1,7 @@
 
 
 #==============================================#
-#  #isolaser resault #
+#  isolaser resault #
 # Supp-Figure-15#
 #==============================================#
 library(data.table)
@@ -12,7 +12,7 @@ library(magrittr)
 library(dplyr)
 library(ggpubr)
 library(patchwork)
-setwd("/media/london_A/mengxin/GTOP_code/supp/supp_fig15")
+setwd("/path/to/GTOP_code/supp/supp_fig15")
 
 
 # Supp.Fig.15a  Number of unique cis-directed events and the numbe --------
