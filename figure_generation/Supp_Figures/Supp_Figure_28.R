@@ -8,7 +8,7 @@ library(ggplot2)
 library(tidyverse)
 library(ggpubr)
 
-setwd("/media/london_A/mengxin/GTOP_code/supp/supp_fig30")
+setwd("/path/to/GTOP_code/supp/supp_fig30")
 
 
 # Supp.Fig.28a fd-QTL- GWAS association -----------------------------------------
