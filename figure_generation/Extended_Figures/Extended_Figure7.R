@@ -8,7 +8,7 @@ library(dplyr)
 library(magrittr)
 library(ggplot2)
 library(ggpubr)
-setwd("/media/london_A/mengxin/GTOP_code/extend/extended_7")
+setwd("/path/to/GTOP_code/extend/extended_7")
 
 # Extended.Data.Fig.7a ----------------------------------------------------
 
