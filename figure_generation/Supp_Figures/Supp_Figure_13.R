@@ -8,7 +8,7 @@ library(ggpubr)
 library(ggplot2)
 library(tidyverse)
 
-setwd("/media/london_A/mengxin/GTOP_code/supp/supp_fig13")
+setwd("/path/to/GTOP_code/supp/supp_fig13")
 
 # Supp.Fig.13a ------------------------------------------------------------
 dat.m <- fread("./input/Figure S13.txt") %>% 
