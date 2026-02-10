@@ -8,7 +8,7 @@ library(magrittr)
 library(PCAForQTL)
 library(cowplot)
 
-setwd("/media/london_A/mengxin/GTOP_code/supp/supp_fig17")
+setwd("/path/to/GTOP_code/supp/supp_fig17")
 # Supp.Fig.19 splicing PCA ------------------------------------------------
 
 
