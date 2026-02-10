@@ -12,7 +12,7 @@ library(tidyverse)
 library(ggpubr)
 library(magrittr)
 library(pheatmap)
-setwd("/media/london_A/mengxin/GTOP_code/extend/extend_145/input")
+setwd("/path/to/GTOP_code/extend/extend_145/input")
 
 
 # Extended.Fig.5a:  Visualization of the effect size of the same QTL pair in different tissues ------------------------------------------------------------------
