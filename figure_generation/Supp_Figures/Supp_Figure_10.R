@@ -6,7 +6,7 @@ library(ggplot2)
 library(ggpubr)
 library(tidyverse)
 
-setwd("/media/london_A/mengxin/GTOP_code/supp/supp_fig10/input")
+setwd("/path/to/GTOP_code/supp/supp_fig10/input")
 
 # Supp.Fig.11a ------------------------------------------------------------
 
