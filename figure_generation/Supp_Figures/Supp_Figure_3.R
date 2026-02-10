@@ -11,7 +11,7 @@ qc_data <- read_excel("RNA_matrix_1586.xlsx")
 
 colnames(qc_data)
 
-# Supp.Figure.12d Distribution of Exonic Rate -----------------------------
+# Supp.Figure.3d Distribution of Exonic Rate -----------------------------
 
 
 library(scales) 
@@ -28,7 +28,7 @@ ggplot(qc_data, aes(x = `Exonic Rate` * 100)) +
   )
 
 
-# Supp.Figure.12e Distribution of Intronic Rate ---------------------------
+# Supp.Figure.3e Distribution of Intronic Rate ---------------------------
 
 
 ggplot(qc_data, aes(x = `Intronic Rate` * 100)) +
@@ -43,7 +43,7 @@ ggplot(qc_data, aes(x = `Intronic Rate` * 100)) +
   )
 
 
-# Supp.Figure.12f Distribution of Intergenic Rate --------------------------
+# Supp.Figure.3f Distribution of Intergenic Rate --------------------------
 
 ggplot(qc_data, aes(x = `Intergenic Rate` * 100)) +
   geom_density(aes(y = ..density..), fill = "grey80") +
@@ -57,7 +57,7 @@ ggplot(qc_data, aes(x = `Intergenic Rate` * 100)) +
   )
 
 
-# Supp.Figure.12g Distribution of Intragenic Rate -------------------------
+# Supp.Figure.3g Distribution of Intragenic Rate -------------------------
 
 ggplot(qc_data, aes(x = `Intragenic Rate` * 100)) +
   geom_density(aes(y = ..density..), fill = "grey80") +
@@ -71,7 +71,7 @@ ggplot(qc_data, aes(x = `Intragenic Rate` * 100)) +
   )
 
 
-# Supp.Figure.12h Distribution of rRNA Rate (log10-transformed) ------------
+# Supp.Figure.3h Distribution of rRNA Rate (log10-transformed) ------------
 
 ggplot(qc_data, aes(x = `rRNA Rate`*100)) +
   geom_density(fill = "grey80") +
@@ -92,7 +92,7 @@ ggplot(qc_data, aes(x = `rRNA Rate`*100)) +
 
 
 
-# Supp.Figure.12i Distribution of Median 3' Bias ---------------------------
+# Supp.Figure.3i Distribution of Median 3' Bias ---------------------------
 
 ggplot(qc_data, aes(x = `Median 3' bias`)) +
   geom_density(aes(y = ..density..), fill = "grey80") +
@@ -106,7 +106,7 @@ ggplot(qc_data, aes(x = `Median 3' bias`)) +
   )
 
 
-# Supp.Figure.12j Mapped reads-------------------------------------------
+# Supp.Figure.3j Mapped reads-------------------------------------------
 
 
 library(ggplot2)
