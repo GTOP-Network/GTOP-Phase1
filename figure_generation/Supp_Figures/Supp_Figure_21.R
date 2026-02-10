@@ -8,7 +8,7 @@ library(ggpubr)
 library(data.table)
 library(corrplot)
 
-setwd("/media/london_A/mengxin/GTOP_code/supp/supp_fig21")
+setwd("/path/to/GTOP_code/supp/supp_fig21")
 # Supp.Fig.21a correlation of eQTL effects between pancreas -----------
 
 dat.w <- fread("./input/Figure S21a.cov.txt")
