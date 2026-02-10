@@ -8,7 +8,7 @@ library(ComplexUpset)
 library(tidyverse)
 library(data.table)
 
-setwd("/media/london_A/mengxin/GTOP_code/supp/supp_fig9/input")
+setwd("/path/to/GTOP_code/supp/supp_fig9/input")
 
 
 # Supp.Fig.9a Candidate transcripts --------------------------------------------
