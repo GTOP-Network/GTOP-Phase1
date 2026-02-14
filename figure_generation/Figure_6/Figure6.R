@@ -3,7 +3,7 @@
 # Figure-6 #
 #==================================#
 
-setwd("/path/to/GTOP_code/fig-6")
+setwd("/media/london_A/mengxin/GTOP_code/fig-6")
 
 library(data.table)
 library(tidyverse)
@@ -16,7 +16,7 @@ library(patchwork)
 
 
 
-## Fig 6a, SLDSC results -------------------------------------------------------
+## Fig.6a, SLDSC results -------------------------------------------------------
 
 plotdf <- fread("./input/Fig6a.txt")
 plotdf %>%
@@ -37,7 +37,7 @@ plotdf %>%
 
 
 
-## Fig 6b, coloc and SMR results -----------------------------------------------
+## Fig.6b, coloc and SMR results -----------------------------------------------
 
 plot_data <- readRDS("./input/Fig6b.RDS")
 
@@ -101,7 +101,7 @@ ggplot(plot_GWAS_loci, aes(x = GWAS_name)) +
 
 
 
-## Fig 6c, Compared with GTEx, JCTF, and MAGE ----------------------------------
+## Fig.6c, Compared with GTEx, JCTF, and MAGE ----------------------------------
 
 compare_ratio_df <- fread("./input/Fig6c.txt")
 
@@ -119,7 +119,7 @@ ggradar::ggradar(
 
 
 
-## Fig 6d, Example of GTOP specific compared with GTOP -------------------------
+## Fig.6d, Example of GTOP specific compared with GTOP -------------------------
 
 plot_df <- fread("./input/Fig6d.txt")
 
@@ -132,11 +132,12 @@ ggplot(plot_df, aes(-log10(GWAS_p), -log10(QTL_p))) +
 
 
 
-## Fig 6e, enrichment in GWAS and TPMI -----------------------------------------
+## Fig.6e, enrichment in GWAS and TPMI -----------------------------------------
 data <- fread("./input/Fig6e.txt")
 
 data$type <- factor(data$type, levels = rev(c("TPMI", "GWAS (EUR)", 
                                               "Pruning TPMI", "Pruning GWAS (EUR)")))
+data$variable <- factor(data$variable, levels = c("tested", "signif"))
 
 ggplot(data, aes(x = value, y = type, fill = variable)) +
   geom_bar(stat = "identity",position = "fill", alpha = 0.8) +
@@ -146,9 +147,8 @@ ggplot(data, aes(x = value, y = type, fill = variable)) +
   theme(axis.text = element_text(colour = "black"),
         legend.position = "none")
 
-
-## Fig 6f, GWAS rare variants ------------------------------------------------
-plot_df <- fread("./input/Fig6e.txt", sep = "\t")
+## Fig.6f, GWAS rare variants ------------------------------------------------
+plot_df <- fread("./input/Fig6f.txt", sep = "\t")
 
 plot_df$Type <- factor(plot_df$Type, levels = c("eQTL", "sQTL", "eQTL + sQTL"))
 plot_df$type2 <-  factor(plot_df$type2, levels = c("At least \n one ancestry \n MAF <0.01",
@@ -158,10 +158,10 @@ ggplot(plot_df, aes(type2, ratio, fill = Type)) +
   geom_col(position = "dodge") +
   theme_classic() +
   labs(x="", y="Percentage of GWAS risk variants") +
-  scale_fill_manual(values = c("eQTL"="#95c595", "sQTL"="#7b86a7", "eQTL + sQTL"="#bc9cc1"))
+  scale_fill_manual(values = c("eQTL"="#95c595", "sQTL"="#7b86a7", "eQTL + sQTL"="#ddb19a"))
 
 
-## Fig 6g, Number of disease-related SVs and TRs -------------------------------
+## Fig.6g, Number of disease-related SVs and TRs -------------------------------
 df_coloc_stat <- readRDS("./input/Fig6g.RDS")
 
 upset_list_snv <- df_coloc_stat$gene_tissue[df_coloc_stat$max_SNV==1]
@@ -176,16 +176,16 @@ mat <- make_comb_mat(gene_list,mode = "distinct")
 UpSet(mat,comb_order = order(-comb_size(mat)),comb_col = "#8398c6")
 
 
-## Fig 6h, Example of SVs ------------------------------------------------------
+## Fig.6h, Example of SVs ------------------------------------------------------
 
 load("./input/Fig6h.RData")
 
 ## loci information
-SNP_name <- GWAS_data$rsid[which.min(GWAS_data$p)]
-SV_name <- GWAS_data$rsid[which.min(GWAS_data$p)]
-loci_start <- min(GWAS_data$pos) + 800000
-loci_end <- max(GWAS_data$pos) - 700000
-GWAS_name <- "Breast cancer"
+SNP_name <- "rs75444904"
+SV_name <- "chr16_72056410_DEL_CM400_1724"
+loci_start <- min(GWAS_data$pos) + 900000
+loci_end <- max(GWAS_data$pos) - 800000
+GWAS_name <- "Hyperlipidemia"
 chr_name <- GWAS_data$chrom[1]
 
 ## GWAS locuszoom
@@ -193,7 +193,7 @@ GWAS_locus <- locus(data = as.data.frame(GWAS_data),
                     xrange = c(loci_start, loci_end),
                     seqname = chr_name, index_snp = SNP_name,
                     ens_db = "EnsDb.Hsapiens.v86")
-# GWAS_locus <- link_LD(GWAS_locus, token = "b6336e5da5d3", pop = "EAS")
+GWAS_locus <- link_LD(GWAS_locus, token = "b6336e5da5d3", pop = "EAS")
 GWAS_plot <- gg_scatter(GWAS_locus, pcutoff = FALSE, yzero=T,  labels = SNP_name, legend_pos = "right",
                         LD_scheme = c("#e5e5e5", "#e5e5e5", "#3e70b4", "#3f7d1d",
                                       "orange", "red", "red")) + 
@@ -205,7 +205,7 @@ SNV_eQTL_locus <- locus(data = as.data.frame(SNV_eQTL_data),
                         xrange = c(loci_start, loci_end),
                         seqname = chr_name, index_snp = SNP_name,
                         ens_db = "EnsDb.Hsapiens.v86")
-# SNV_eQTL_locus <- link_LD(SNV_eQTL_locus, token = "b6336e5da5d3", pop = "EAS")
+SNV_eQTL_locus <- link_LD(SNV_eQTL_locus, token = "b6336e5da5d3", pop = "EAS")
 SNV_eQTL_plot <- gg_scatter(SNV_eQTL_locus, pcutoff = FALSE, yzero=T,  labels = SNP_name, legend_pos = "right",
                             LD_scheme = c("#e5e5e5", "#e5e5e5", "#3e70b4", "#3f7d1d",
                                           "orange", "red", "red")) + 
@@ -215,10 +215,9 @@ SNV_eQTL_plot <- gg_scatter(SNV_eQTL_locus, pcutoff = FALSE, yzero=T,  labels = 
 ## SV-eQTL locuszoom
 SV_eQTL_locus <- locus(data = as.data.frame(SV_eQTL_data),
                        xrange = c(loci_start, loci_end),
-                       seqname = chr_name, index_snp = SNP_name,
+                       seqname = chr_name, index_snp = SV_name,
                        ens_db = "EnsDb.Hsapiens.v86")
-# SV_eQTL_locus <- link_LD(SV_eQTL_locus, token = "b6336e5da5d3", pop = "EAS")
-SV_eQTL_plot <- gg_scatter(SV_eQTL_locus, pcutoff = FALSE,  labels = SNP_name, legend_pos = "right",
+SV_eQTL_plot <- gg_scatter(SV_eQTL_locus, pcutoff = FALSE,  labels = SV_name, legend_pos = "right",
                            LD_scheme = c("#e5e5e5", "#e5e5e5", "#3e70b4", "#3f7d1d","orange", "red", "red")) + 
   annotate("text",x=loci_end/10^6, y=max(-log10(SV_eQTL_data$p)),label="eQTL_Whole Blood", hjust="right") +
   theme(axis.text.x = element_blank(), axis.title.x = element_blank())
@@ -230,14 +229,13 @@ joint_fm_locus <- locus(data = as.data.frame(joint_fm_data), yvar="PIP",
                         ens_db = "EnsDb.Hsapiens.v86")
 joint_fm_plot <- gg_scatter(joint_fm_locus, pcutoff = FALSE, yzero=T,  labels = SV_name, legend_pos = "right",
                             LD_scheme = c("#e5e5e5", "#e5e5e5", "#3e70b4", "#3f7d1d","orange", "red", "red")) + 
-  annotate("text",x=loci_end/10^6, y=max(fm_data$PIP),label="Joint fine-mapping", hjust="right") +
+  annotate("text",x=loci_end/10^6, y=max(joint_fm_data$PIP),label="Joint fine-mapping", hjust="right") +
   theme(axis.text.x = element_blank(), axis.title.x = element_blank())
 
 ## gene structure
-gene_plot <- gg_genetracks(SNV_eQTL_locus, highlight = "CASP8", 
-                           filter_gene_name = c("CASP8"), 
+gene_plot <- gg_genetracks(SNV_eQTL_locus, highlight = "HP", 
+                           filter_gene_name = c("HP"), 
                            filter_gene_biotype = c("protein_coding"))
 
 ## plot
-wrap_plots(list(GWAS_plot, SNV_eQTL_plot, SV_eQTL_plot, fm_plot, gene_plot), ncol = 1, heights = c(3,3,3,3,1))
-
+wrap_plots(list(GWAS_plot, SNV_eQTL_plot, SV_eQTL_plot, joint_fm_plot, gene_plot), ncol = 1, heights = c(3,3,3,3,1))
