@@ -15,7 +15,7 @@ cd bambu
 ### Step 1: Preparation of annotation objects
 
 ```bash
-run.step1.sh
+qsub run.step1.sh
 ```
 
 Genome annotations were preprocessed using the `prepareAnnotations()` function to generate `bambuAnnotations` objects. These objects were cached and reused across multiple runs to avoid repeated preprocessing.
@@ -23,7 +23,7 @@ Genome annotations were preprocessed using the `prepareAnnotations()` function t
 ### Step 2: Generation and reuse of read class files (rcFiles)
 
 ```bash
-run.step2.sh
+qsub run.step2.sh
 ```
 
 Read classes were constructed and stored as read class files (`rcFiles`). These files were reused in subsequent Bambu runs to reduce computational overhead when performing transcript discovery under different configurations or sample combinations.
@@ -31,7 +31,7 @@ Read classes were constructed and stored as read class files (`rcFiles`). These 
 ### Step 3: Transcript discovery without quantification
 
 ```bash
-run.step3.sh
+qsub run.step3.sh
 ```
 
 Transcript discovery was performed using aligned reads (BAM files), reference annotations, and the reference genome sequence. Expression quantification was disabled (`quant = FALSE`) to focus exclusively on transcript structure identification. Bambu was run with `NDR = 1`, and downstream filtering was applied to obtain high-confidence transcript models. The output is a `GRangesList` object containing both annotated and novel transcripts.
@@ -49,7 +49,7 @@ cd flair
 ### Step 1: Read alignment and splice-site correction
 
 ```bash
-run.step1.sh
+qsub run.step1.sh
 ```
 
 Raw reads in FASTA or FASTQ format were aligned to the reference genome. SAM files were converted to BED12 format, followed by splice-site correction using genome annotations. Corrected reads were split by chromosome for parallel processing.
@@ -57,7 +57,7 @@ Raw reads in FASTA or FASTQ format were aligned to the reference genome. SAM fil
 ### Step 2: Isoform assembly
 
 ```bash
-run.step2.sh
+qsub run.step2.sh
 ```
 
 Corrected reads were collapsed into high-confidence isoforms using recommended FLAIR parameters optimized for both known and novel transcript detection.
@@ -65,7 +65,7 @@ Corrected reads were collapsed into high-confidence isoforms using recommended F
 ### Step 3: Merging chromosome-level annotations
 
 ```bash
-run.step3.sh
+qsub run.step3.sh
 ```
 
 Chromosome-specific GTF files were merged to generate a unified transcript annotation.
