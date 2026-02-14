@@ -1,0 +1,4 @@
+index	Annotated	Novel
+GTOP	108850	82675
+replicated in ≥1 datasets	48262	22832
+replicated in ≥2 datasets	16704	3387
