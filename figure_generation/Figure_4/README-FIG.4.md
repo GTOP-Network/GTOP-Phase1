@@ -10,4 +10,4 @@ This directory contains the scripts for generating Figure 4:
 * Figure 4G: Boxplot of he-QTLs z-score derived from GTOP and GTEx data.
 * Figure 4H: Distribution of the size of 95% CSs and comparisons between the cross-ancestry fine-mapping (GTEx+GTOP) and single-population fine-mapping.
 * Figure 4I: Proportion of CSs with best (maximum) PIP greater than 0.8 across all 95% CSs in each analysis.
-* Figure 4J: the distribution of PIP for all variants in the fine-mapped CSs associated with eGene ABO in liver.
+* Figure 4J: The distribution of PIP for all variants in the fine-mapped CSs associated with eGene ABO in liver.
