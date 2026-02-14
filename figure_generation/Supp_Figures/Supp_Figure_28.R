@@ -8,51 +8,72 @@ library(ggplot2)
 library(tidyverse)
 library(ggpubr)
 
-setwd("/path/to/GTOP_code/supp/supp_fig30")
+setwd("/media/london_A/mengxin/GTOP_code/supp/supp_fig28")
 
 
-# Supp.Fig.28a fd-QTL- GWAS association -----------------------------------------
-fd_EAS_GWAS_res3 <- fread("./input/supp_fig28a_data.txt")
+# Supp.Fig.28a Example Disease associated-fd-QTL --------------------------------------------
 
-pheatmap::pheatmap(fd_EAS_GWAS_res3[, 3:ncol(fd_EAS_GWAS_res3)], border_color = NA, 
-                   treeheight_row = 15, treeheight_col = 15,
-                   color = colorRampPalette(c("white", "red"))(100),
-                   labels_row=paste0(fd_EAS_GWAS_res3$variant_id, "_", 
-                                     fd_EAS_GWAS_res3$gene_symbol) )
+## Figure a
+load("./input/supp_fig28a_data.RData")
+
+loci_start <- min(GWAS_data$pos)
+loci_end <- max(GWAS_data$pos) #- 500000
+chr_name <- GWAS_data$chrom[1]
+SNP_name <- "rs3782886" #GWAS_data$rsid[which.min(GWAS_data$p)]
+GWAS_name <- "Weight"
+
+## GWAS locuszoom
+GWAS_locus <- locus(data = as.data.frame(GWAS_data),
+                    xrange = c(loci_start, loci_end),
+                    seqname = chr_name, index_snp = SNP_name,
+                    ens_db = "EnsDb.Hsapiens.v86")
+GWAS_locus$data$ld <- d1$LD[,SNP_name][GWAS_locus$data$rsid]^2
+GWAS_plot <- gg_scatter(GWAS_locus, pcutoff = FALSE, yzero=T,  labels = SNP_name, legend_pos = "right",
+                        LD_scheme = c("#e5e5e5", "#e5e5e5", "#3e70b4", "#3f7d1d",
+                                      "orange", "red", "red")) + 
+  annotate("text",x=loci_end/10^6, y=max(-log10(GWAS_data$p)),label=GWAS_name, hjust="right") +
+  theme(axis.text.x = element_blank(), axis.title.x = element_blank())
+
+## eQTL locuszoom
+SNV_eQTL_locus <- locus(data = as.data.frame(SNV_eQTL_data),
+                        xrange = c(loci_start, loci_end),
+                        seqname = chr_name, index_snp = SNP_name,
+                        ens_db = "EnsDb.Hsapiens.v86")
+SNV_eQTL_locus$data$ld <- d2$LD[,SNP_name][SNV_eQTL_locus$data$rsid]^2
+
+SNV_eQTL_plot <- gg_scatter(SNV_eQTL_locus, pcutoff = FALSE, yzero=T,  labels = SNP_name, legend_pos = "right",
+                            LD_scheme = c("#e5e5e5", "#e5e5e5", "#3e70b4", "#3f7d1d",
+                                          "orange", "red", "red")) + 
+  annotate("text",x=loci_end/10^6, y=max(-log10(SNV_eQTL_data$p)),label="eQTL_Whole Blood", hjust="right") +
+  theme(axis.text.x = element_blank(), axis.title.x = element_blank())
+
+## gene structure
+gene_plot <- gg_genetracks(SNV_eQTL_locus, highlight = "BRAP", 
+                           filter_gene_name = c("BRAP"), 
+                           filter_gene_biotype = c("protein_coding"))
+
+## plot
+wrap_plots(list(GWAS_plot, SNV_eQTL_plot, gene_plot), ncol = 1, heights = c(3,3,3,3,1))
 
 
-# Supp.Fig.28b fd-QTL- trait number --------------------------------------------
-fd_EAS_GWAS_res2 <- fread("./input/supp_fig28b_data.txt")
 
-fd_EAS_GWAS_res2$count <- factor(as.character(fd_EAS_GWAS_res2$count),
-                                 levels = as.character(unique(fd_EAS_GWAS_res2$count)))
-
-ggplot(fd_EAS_GWAS_res2, aes(qtl_count, count)) +
-  geom_col() +
-  theme_classic() +
-  labs(x="Number of fd-QTLs", y="Number of disease/traits")
+# Supp.Fig.28b ------------------------------------------------------------
 
 
-# Example Disease associated-fd-QTL --------------------------------------------
-gene_qtl_subdf <- fread("./input/supp_fig28c_data.txt")
+tmp_df <- fread("./input/supp_fig28b_data.txt")
 
-gene_qtl_subdf$cs <- factor(gene_qtl_subdf$cs, levels = unique(gene_qtl_subdf$cs))
-ggplot(gene_qtl_subdf[-log10(gene_qtl_subdf$p_value) > 1, ], aes(x=maf_GTEx, y=maf_GTOP) ) +
-  ggpointdensity::geom_pointdensity( alpha=1, aes(size=-log10(p_value), fill=cs), adjust=1, shape=21 )+
+ggplot(tmp_df[tmp_df$p<0.01,], aes(af_other*100, af_GTOP*100)) +
+  ggpointdensity::geom_pointdensity( alpha=1, aes(size=-log10(p)), adjust=1, shape=21 )+
   scale_color_viridis_b()+
   ggdensity::geom_hdr_lines( linetype="dashed", linewidth=0.5)+
-  labs(x="maf_GTEx", y="maf_GTOP")+
+  labs(x="Alternative allele frequency (Other populations)", 
+       y="Alternative allele frequency (GTOP)")+
+  facet_grid(.~type) +
   theme_classic()+
   theme(
     axis.line = element_line(color="black"),
     axis.ticks = element_line(color="black"),
-    axis.text.x = element_text(color="black"),
-    axis.title = element_text(size=rel(1.7)),
-    legend.title = element_blank(),
-    legend.text = element_text(size=rel(1.2)),
+    axis.text = element_text(color="black"),
     legend.position = "right",
-    panel.grid = element_blank(),
-    plot.margin=unit(c(0.3,0.3,0.3,0.3),"cm")
-  ) +
-  ggh4x::coord_axes_inside(labels_inside = F) +
-  scale_fill_manual(values = c("-"="white", "L1"="#f0c479", "L2"="#e19b64"))
+  ) + ylim(c(0,100)) +
+  ggh4x::coord_axes_inside(labels_inside = F)
