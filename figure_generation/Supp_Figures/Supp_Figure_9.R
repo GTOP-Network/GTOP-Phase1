@@ -8,7 +8,7 @@ library(ComplexUpset)
 library(tidyverse)
 library(data.table)
 
-setwd("/path/to/GTOP_code/supp/supp_fig9/input")
+setwd("/media/london_A/mengxin/GTOP_code/supp/supp_fig9/input")
 
 
 # Supp.Fig.9a Candidate transcripts --------------------------------------------
@@ -274,3 +274,113 @@ upset(
     strip.background = element_blank(),
     strip.text = element_text(color = "black")
   )
+
+
+# Supp.Fig.9i -------------------------------------------------------------
+
+plot_scatter_with_fit <- function(file, x_col){
+  
+  df <- read.table(file,
+                   header = TRUE,
+                   sep = "\t",
+                   check.names = FALSE)
+  
+  y_col <- "Number of tissue-specific transcripts"
+  group_col <- "annotation"
+  
+  df <- df %>%
+    select(all_of(c(x_col, y_col, group_col))) %>%
+    na.omit()
+  
+  stats <- df %>%
+    group_by(.data[[group_col]]) %>%
+    summarise(
+      p = cor.test(
+        .data[[x_col]],
+        .data[[y_col]],
+        method = "spearman",
+        exact = FALSE
+      )$p.value
+    )
+  
+  stats$label <- paste0(stats[[group_col]],
+                        ": p=",
+                        sprintf("%.2f", stats$p))
+  novel_annotated_COLOR <- c(
+    "Annotated" = "#cf928f",
+    "Novel" = "#ad3b2b"
+  )
+  
+  ggplot(df,
+         aes(x = .data[[x_col]],
+             y = .data[[y_col]],
+             color = .data[[group_col]])) +
+    geom_point(size = 2.8) +
+    geom_smooth(method = "lm",
+                se = FALSE,
+                linetype = "dashed",
+                linewidth = 0.7) +
+    scale_color_manual(values = novel_annotated_COLOR) +
+    annotate("text",
+             x = min(df[[x_col]]),
+             y = max(df[[y_col]]),
+             label = paste(stats$label, collapse = "\n"),
+             hjust = 0,
+             vjust = 1,
+             size = 4) +
+    labs(
+      x = x_col,
+      y = y_col,
+      color = "Annotation"
+    ) +
+    theme_classic(base_size = 12) +
+    theme(legend.position = "top")
+}
+
+
+plot_scatter_with_fit(
+  file = "supp9i-k.LR_tissue_specific.txt",
+  x_col = "Sample size"
+)
+
+
+# Supp.Fig.9j -------------------------------------------------------------
+
+plot_scatter_with_fit(
+  file = "supp9i-k.LR_tissue_specific.txt",
+  x_col = "Median number of reads"
+)
+
+
+# Supp.Fig.9k -------------------------------------------------------------
+
+plot_scatter_with_fit(
+  file = "supp9i-k.LR_tissue_specific.txt",
+  x_col = "Median RIN"
+)
+
+
+# Supp.Fig.9l -------------------------------------------------------------
+
+library(tidyr)
+dat<-fread("supp9l.LR_transcript_tissue_specificity_10samples.txt")
+
+dat_long <- pivot_longer(
+  dat,
+  cols = c("Annotated", "Novel"),
+  names_to = "Type",
+  values_to = "Proportion"
+)
+
+ggplot(dat_long, aes(x = index, y = Proportion, color = Type)) +
+  geom_point(size = 2) +           
+  geom_line(linewidth = 1) +  
+  scale_y_continuous(
+    breaks = seq(0, 0.50, by = 0.05)
+  ) +
+  scale_color_manual(values = c("Annotated" = "#c3968f", "Novel" = "#9d3929")) +  
+  labs(x = "Tissue number", y = "Proportion of transcripts", color = "Type") +
+  theme_classic(base_size = 13)
+
+
+
