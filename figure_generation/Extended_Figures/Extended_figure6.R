@@ -3,7 +3,7 @@
 # Extended Figure-6 #
 #==================================#
 
-setwd("/path/to/GTOP_code/extend/extend_6")
+setwd("/media/london_A/mengxin/GTOP_code/extend/extend_6")
 
 library(data.table)
 library(tidyverse)
@@ -123,46 +123,41 @@ ggplot(ff_tissue_summary, aes(x=gene_count, y=sum, fill=new_Type_GTEx)) +
     scale_x_continuous(position = "top") 
 
 
-## Extended.Fig.6f, beta value of he-QTLs --------------------------------
-sig_res_df <-  fread("./input/Extended_fig6f_data.txt")
+## Extended.Fig.6f, Correlation between he-QTLs and eGene number ---------------
+count_df1 <-  fread("./input/Extended_fig6f_data.txt")
 
-ggplot(data = sig_res_df, aes(x = GTOP_beta, y = GTEx_beta)) + 
-    geom_point(color="#0c0d0c", size=0.3) +
-    ggpointdensity::geom_pointdensity(size=2, adjust=0.5, shape=19 )+
-    scale_color_viridis_c(option = "D", direction = 1) +
-    ggdensity::geom_hdr_lines(linetype="solid", linewidth=0.5, 
-                              probs = c(0.9, 0.7, 0.5), color="#ff0000") + 
-    geom_abline(intercept = 0, slope = 1, color="#282c33", 
-                size=0.5, linetype="dashed") +
-    geom_abline(intercept = 0, slope = -1, color="#282c33", 
-                size=0.5, linetype="dashed")+
-    theme_classic(base_size = 12) +
-    geom_hline(yintercept = 0, color = "black") +
-    labs(x="Effect size (GTOP)", y="Effect size (GTEx)") +
-    ggh4x::coord_axes_inside(labels_inside = T)
+ggplot(count_df1, aes(eGene, count, color=tissue)) +
+  geom_point(size=2) +theme_classic() + 
+  labs(x="Number of eGene", y="Number of he-QTLs") +
+  geom_smooth(method = 'lm', se = T, color = '#323940', 
+              linetype = 'dashed', size = 0.7)
 
 
 ## Extended.Fig.6g, Example of he-QTLs --------------------------------
-GTOP_GTEx_data <- readRDS("./input/Extended_fig6g_data.RDS")
-GTOP_GTEx_data$source <- factor(GTOP_GTEx_data$source, levels = c("GTOP", "GTEx"))
+plot_heQTL_df <- readRDS("./input/Extended_fig6g_data.RDS")
 
-ggplot(GTOP_GTEx_data, aes(genotype_label, scale_counts, fill = source)) +
-    geom_boxplot(outlier.colour = NA, width = 0.8) +
-    ggbeeswarm::geom_quasirandom(
-        aes(
-            x = genotype_label,
-            col = source,
-            group = interaction(genotype_label, source)
-        ),
-        size = 2,
-        dodge.width = 0.8,
-        width = 0.2
-    ) +
-    theme_classic(base_size = 12) +
-    scale_fill_manual(values = c("white", "white")) +
-    scale_color_manual(values = c("#bd5a45", "#e7c798")) +
-    theme(
-        legend.position = 'top',
-        plot.title = element_text(size = 10),
-        axis.text = element_text(colour = "black")
-    ) 
+plot_heQTL_df$genotype_parsed <- as.character(plot_heQTL_df$genotype_parsed)
+
+ggplot(plot_heQTL_df, aes(genotype_parsed, scale_counts, fill = source)) +
+  geom_boxplot(outlier.colour = NA, width = 0.8) +
+  ggbeeswarm::geom_quasirandom(
+    aes(
+      x = genotype_parsed,
+      col = source,
+      group = interaction(genotype_parsed, source)
+    ),
+    size = 2,
+    dodge.width = 0.8,
+    width = 0.2
+  ) +
+  facet_wrap(.~SNP_name, scales = "free") +
+  # scale_x_discrete(label_value(genotype_label))
+  theme_classic(base_size = 12) +
+  scale_fill_manual(values = c("white", "white")) +
+  scale_color_manual(values = c("#bd5a45", "#e7c798")) +
+  theme(
+    legend.position = 'top',
+    plot.title = element_text(size = 10),
+    axis.text = element_text(colour = "black")
+  ) 
+
