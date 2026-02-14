@@ -122,10 +122,7 @@ def filter_counts(counts_df):
     # filter out introns with low counts or low complexity
     n = np.floor(frac_df.shape[1]*0.1)
     if n < 10:
-        if frac_df.shape[1] > 10:
-            n = 10
-        else:
-            n = 1
+        n = 10
     mask = (pct_zero <= 0.5) & (n_unique >= n)
     # additional filter for low complexity
     ns = zscore_df.shape[1]
