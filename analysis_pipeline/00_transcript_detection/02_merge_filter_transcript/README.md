@@ -1,17 +1,17 @@
-# Transcript integration, annotation, filtering, and reference construction
+# Transcript merging, annotation, filtering, and reference construction
 
 To generate a unified and high-confidence transcript reference, transcript models identified by the three discovery pipelines were integrated based on intron-chain identity. Transcripts supported by multiple methods were prioritized, followed by annotation, quantification, and stringent filtering to produce the final long-read transcript reference used in downstream analyses.
 
 ---
 
 ```bash
-cd script
+cd scripts
 ```
 
 ## 1. Transcript integration and candidate transcript generation
 
 ```bash
-merge_run.sh
+qsub merge_run.sh
 ```
 
 Transcript models identified by the three methods were merged based on intron-chain identity. Transcripts sharing identical ordered splice junctions were grouped into a single intron-chain–defined model. For intron chains with heterogeneous 5′ or 3′ boundaries, the transcript spanning the most distal coordinates was selected as the representative model. Each intron chain was assigned a priority score corresponding to the number of independent methods supporting it. Transcripts supported by at least two methods were retained, and mono-exonic transcripts were excluded to generate a unified candidate transcript set.
@@ -70,4 +70,4 @@ Candidate transcripts were filtered based on SQANTI3 annotation categories and t
 python enhanced_gtf_run.py enhanced_gtf
 ```
 
-Two transcript reference annotations were generated: (i) a long-read–derived transcript reference (GTOP), and (ii) an enhanced reference combining GTOP novel transcripts with GENCODE v47 annotations. These references were used for downstream quantification and integrative analyses.
+Two transcript reference annotations were generated. First, we constructed a long-read–derived transcript reference (GTOP), in which full splice match (FSM) and incomplete splice match (ISM) transcripts were replaced by their corresponding reference transcript models from GENCODE v47. Second, we generated an enhanced reference by integrating GTOP novel transcripts with the complete GENCODE v47 annotation. These references were used for downstream expression quantification and integrative analyses.
