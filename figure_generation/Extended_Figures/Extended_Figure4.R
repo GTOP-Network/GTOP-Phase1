@@ -263,7 +263,7 @@ tissue_order<-c("Liver","Pancreas_Tail","Pancreas_Head","Spleen","Adrenal_Gland"
 
 plot_data <- dat_cell %>%filter(RBP %in% motif_order) %>% 
   mutate(RBP = factor(RBP, levels = rev(motif_order)),
-         Tissue = factor(Tissue, levels = rev(tissue_order)),
+         Tissue = factor(Tissue, levels = tissue_order),
          signif_label = case_when(
            pvalue < 0.001 ~ "***",
            pvalue < 0.01 ~ "**",
