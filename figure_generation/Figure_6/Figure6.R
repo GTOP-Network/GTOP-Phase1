@@ -172,8 +172,10 @@ gene_list <- list(SNV=upset_list_snv,
                   SV=upset_list_SV,
                   TR=upset_list_TR)
 
+library(ComplexHeatmap)
 mat <- make_comb_mat(gene_list,mode = "distinct")
-UpSet(mat,comb_order = order(-comb_size(mat)),comb_col = "#8398c6")
+UpSet(mat,comb_order = order(-comb_size(mat)))
+
 
 
 ## Fig.6h, Example of SVs ------------------------------------------------------
