@@ -25,5 +25,5 @@ This directory contains plotting code for the following figures:
 * Supp_Figure24: An example of structural variant associated with gene expression level of IRGM.
 * Supp_Figure25: Allele frequency of variants in GTOP.
 * Supp_Figure26: Proportion of fine-mapped 95% CSs of sQTLs with SVs as lead.
-* Supp_Figure28: Characterization of fd-QTLs.
+* Supp_Figure28: Disease-related fd-QTLs.
 * Supp_Figure29: The genetic regulation of genomic signals under positive selection and archaic introgression in East Asian ancestry populations. 
